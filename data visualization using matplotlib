@@ -1,1 +1,193 @@
+Using the matplotlib.pyplot interface
+There are many ways to use Matplotlib. In this course, we will focus on the pyplot interface, which provides the most flexibility in creating and customizing data visualizations.
 
+Initially, we will use the pyplot interface to create two kinds of objects: Figure objects and Axes objects.
+
+This course introduces a lot of new concepts, so if you ever need a quick refresher, download the Matplotlib Cheat Sheet and keep it handy!
+
+# Import the matplotlib.pyplot submodule and name it plt
+import matplotlib.pyplot as plt
+
+# Create a Figure and an Axes with plt.subplots
+fig, ax = plt.subplots()
+
+# Call the show function to show the result
+plt.show()
+
+Adding data to an Axes object
+Adding data to a figure is done by calling methods of the Axes object. In this exercise, we will use the plot method to add data about rainfall in two American cities: Seattle, WA and Austin, TX.
+
+The data are stored in two pandas DataFrame objects that are already loaded into memory: seattle_weather stores information about the weather in Seattle, and austin_weather stores information about the weather in Austin. Each of the DataFrames has a "MONTH" column that stores the three-letter name of the months. Each also has a column named "MLY-PRCP-NORMAL" that stores the average rainfall in each month during a ten-year period.
+
+In this exercise, you will create a visualization that will allow you to compare the rainfall in these two cities.
+
+ax.plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"])
+
+Exercise
+Exercise
+Customizing data appearance
+We can customize the appearance of data in our plots, while adding the data to the plot, using key-word arguments to the plot command.
+
+In this exercise, you will customize the appearance of the markers, the linestyle that is used, and the color of the lines and markers for your data.
+
+As before, the data is already provided in pandas DataFrame objects loaded into memory: seattle_weather and austin_weather. These each have a "MONTHS" column and a "MLY-PRCP-NORMAL" that you will plot against each other.
+
+In addition, a Figure object named fig and an Axes object named ax have already been created for you.
+
+# Plot Seattle data, setting data appearance
+ax.plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"], color = "b", marker = "o", linestyle = "--")
+
+# Plot Austin data, setting data appearance
+ax.plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"], color = "r", marker = "v", linestyle = "--")
+
+# Call show to display the resulting plot
+plt.show()
+
+ax.plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"])
+ax.plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"])
+
+# Customize the x-axis label
+ax.set_xlabel("Time (months)")
+
+# Customize the y-axis label
+ax.set_ylabel("Precipitation (inches)")
+
+# Add the title
+ax.set_title("Weather patterns in Austin and Seattle")
+
+# Display the figure
+plt.show
+
+Creating a grid of subplots
+How would you create a Figure with 6 Axes objects organized in 3 rows and 2 columns?
+
+Possible answers
+
+
+fig, ax = plt.subplots((3, 2))
+
+fig, ax = plt.axes((2, 3))
+
+*fig, ax = plt.subplots(3, 2)
+
+fig, ax = plt.subplots((2, 3))
+
+Creating small multiples with plt.subplots
+Small multiples are used to plot several datasets side-by-side. In Matplotlib, small multiples can be created using the plt.subplots() function. The first argument is the number of rows in the array of Axes objects generate and the second argument is the number of columns. In this exercise, you will use the Austin and Seattle data to practice creating and populating an array of subplots.
+
+The data is given to you in DataFrames: seattle_weather and austin_weather. These each have a "MONTH" column and "MLY-PRCP-NORMAL" (for average precipitation), as well as "MLY-TAVG-NORMAL" (for average temperature) columns. In this exercise, you will plot in a separate subplot the monthly average precipitation and average temperatures in each city.
+
+# Create a Figure and an array of subplots with 2 rows and 2 columns
+fig, ax = plt.subplots(2, 2)
+
+# Addressing the top left Axes as index 0, 0, plot month and Seattle precipitation
+ax[0, 0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"])
+
+# In the top right (index 0,1), plot month and Seattle temperatures
+ax[0, 1].plot(seattle_weather["MONTH"], seattle_weather["MLY-TAVG-NORMAL"])
+
+# In the bottom left (1, 0) plot month and Austin precipitations
+ax[1, 0].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"])
+
+# In the bottom right (1, 1) plot month and Austin temperatures
+ax[1, 1].plot(austin_weather["MONTH"], austin_weather["MLY-TAVG-NORMAL"])
+plt.show()
+
+Small multiples with shared y axis
+When creating small multiples, it is often preferable to make sure that the different plots are displayed with the same scale used on the y-axis. This can be configured by setting the sharey key-word to True.
+
+In this exercise, you will create a Figure with two Axes objects that share their y-axis. As before, the data is provided in seattle_weather and austin_weather DataFrames.
+
+# Create a figure and an array of axes: 2 rows, 1 column with shared y axis
+fig, ax = plt.subplots(2, 1, sharey=True)
+
+# Plot Seattle precipitation data in the top axes
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"], color = 'b')
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-25PCTL"], color = 'b', linestyle = '--')
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-75PCTL"], color = 'b', linestyle = '--')
+
+# Plot Austin precipitation data in the bottom axes
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"], color = 'r')
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-25PCTL"], color = 'r', linestyle = '--')
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-75PCTL"], color = 'r', linestyle = '--')
+
+plt.show()
+
+Read data with a time index
+pandas DataFrame objects can have an index denoting time, this recognized by Matplotlib for axis labeling.
+
+This exercise involves reading data from climate_change.csv, containing CO2 levels and temperatures recorded on the 6th of each month from 1958 to 2016, using pandas' read_csv function. The parse_dates and index_col arguments help set a DateTimeIndex.
+
+Don't forget to check out the Matplotlib Cheat Sheet for a quick overview of essential concepts and methods.
+
+# Import pandas as pd
+import pandas as pd
+
+# Read the data from file using read_csv
+climate_change = pd.read_csv("climate_change.csv", parse_dates = ["date"], index_col = "date")
+
+Plot time-series data
+To plot time-series data, we use the Axes object plot command. The first argument to this method are the values for the x-axis and the second argument are the values for the y-axis.
+
+This exercise provides data stored in a DataFrame called climate_change. This variable has a time-index with the dates of measurements and two data columns: "co2" and "relative_temp".
+
+In this case, the index of the DataFrame would be used as the x-axis values and we will plot the values stored in the "relative_temp" column as the y-axis values. We will also properly label the x-axis and y-axis.
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+
+# Add the time-series for "relative_temp" to the plot
+ax.plot(climate_change.index, climate_change['relative_temp'])
+
+# Set the x-axis label
+ax.set_xlabel('Time')
+
+# Set the y-axis label
+ax.set_ylabel('Relative temperature (Celsius)')
+
+# Show the figure
+plt.show()
+
+Using a time index to zoom in
+When a time-series is represented with a time index, we can use this index for the x-axis when plotting. We can also select a range of dates to zoom in on a particular period within the time-series using pandas' indexing facilities. In this exercise, you will select a portion of a time-series dataset and you will plot that period.
+
+The data to use is stored in a DataFrame called climate_change, which has a time-index with dates of measurements and two data columns: "co2" and "relative_temp".
+
+import matplotlib.pyplot as plt
+
+# Use plt.subplots to create fig and ax
+fig, ax = plt.subplots()
+
+# Create variable seventies with data from "1970-01-01" to "1979-12-31"
+seventies = climate_change["1970-01-01": "1979-12-31"]
+
+# Add the time-series for "co2" data from seventies to the plot
+ax.plot(seventies.index, seventies["co2"])
+
+# Show the figure
+plt.show()
+
+Plotting two variables
+If you want to plot two time-series variables that were recorded at the same times, you can add both of them to the same subplot.
+
+If the variables have very different scales, you'll want to make sure that you plot them in different twin Axes objects. These objects can share one axis (for example, the time, or x-axis) while not sharing the other (the y-axis).
+
+To create a twin Axes object that shares the x-axis, we use the twinx method.
+
+In this exercise, you'll have access to a DataFrame that has the climate_change data loaded into it. This DataFrame was loaded with the "date" column set as a DateTimeIndex, and it has a column called "co2" with carbon dioxide measurements and a column called "relative_temp" with temperature measurements.
+
+import matplotlib.pyplot as plt
+
+# Initalize a Figure and Axes
+fig, ax = plt.subplots()
+
+# Plot the CO2 variable in blue
+ax.plot(climate_change.index, climate_change["co2"], color='blue')
+
+# Create a twin Axes that shares the x-axis
+ax2 = ax.twinx()
+
+# Plot the relative temperature in red
+ax2.plot(climate_change.index, climate_change["relative_temp"], color='red')
+
+plt.show()
