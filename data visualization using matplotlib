@@ -191,3 +191,85 @@ ax2 = ax.twinx()
 ax2.plot(climate_change.index, climate_change["relative_temp"], color='red')
 
 plt.show()
+
+Defining a function that plots time-series data
+Once you realize that a particular section of code that you have written is useful, it is a good idea to define a function that saves that section of code for you, rather than copying it to other parts of your program where you would like to use this code.
+
+Here, we will define a function that takes inputs such as a time variable and some other variable and plots them as x and y inputs. Then, it sets the labels on the x- and y-axis and sets the colors of the y-axis label, the y-axis ticks and the tick labels.
+
+# Define a function called plot_timeseries
+def plot_timeseries(axes, x, y, color, xlabel, ylabel):
+
+  # Plot the inputs x,y in the provided color
+  axes.plot(x, y, color=color)
+
+  # Set the x-axis label
+  axes.set_xlabel(xlabel)
+
+  # Set the y-axis label
+  axes.set_ylabel(ylabel, color=color)
+
+  # Set the colors tick params for y-axis
+  axes.tick_params('y', colors=color)
+
+Using a plotting function
+Defining functions allows us to reuse the same code without having to repeat all of it. Programmers sometimes say "Don't repeat yourself".
+
+In the previous exercise, you defined a function called plot_timeseries:
+
+plot_timeseries(axes, x, y, color, xlabel, ylabel)
+that takes an Axes object (as the argument axes), time-series data (as x and y arguments) the name of a color (as a string, provided as the color argument) and x-axis and y-axis labels (as xlabel and ylabel arguments). In this exercise, the function plot_timeseries is already defined and provided to you.
+
+Use this function to plot the climate_change time-series data, provided as a pandas DataFrame object that has a DateTimeIndex with the dates of the measurements and co2 and relative_temp columns.
+
+fig, ax = plt.subplots()
+
+# Plot the CO2 levels time-series in blue
+plot_timeseries(ax, climate_change.index, climate_change['co2'], "blue", "Time (years)", "CO2 levels")
+
+# Create a twin Axes object that shares the x-axis
+ax2 = ax.twinx()
+
+# Plot the relative temperature data in red
+plot_timeseries(ax2, climate_change.index, climate_change['relative_temp'], "red", "Time (years)", "Relative temperature (Celsius)")
+
+plt.show()
+
+Annotating a plot of time-series data
+Annotating a plot allows us to highlight interesting information in the plot. For example, in describing the climate change dataset, we might want to point to the date at which the relative temperature first exceeded 1 degree Celsius.
+
+For this, we will use the annotate method of the Axes object. In this exercise, you will have the DataFrame called climate_change loaded into memory. Using the Axes methods, plot only the relative temperature column as a function of dates, and annotate the data.
+
+fig, ax = plt.subplots()
+
+# Plot the relative temperature data
+ax.plot(climate_change.index, climate_change['relative_temp'])
+
+# Annotate the date at which temperatures exceeded 1 degree
+ax.annotate('>1 degree', xy=((pd.Timestamp('2015-10-06'), 1)))
+
+plt.show()
+
+Plotting time-series: putting it all together
+In this exercise, you will plot two time-series with different scales on the same Axes, and annotate the data from one of these series.
+
+The CO2/temperatures data is provided as a DataFrame called climate_change. You should also use the function that we have defined before, called plot_timeseries, which takes an Axes object (as the axes argument) plots a time-series (provided as x and y arguments), sets the labels for the x-axis and y-axis and sets the color for the data, and for the y tick/axis labels:
+
+plot_timeseries(axes, x, y, color, xlabel, ylabel)
+Then, you will annotate with text an important time-point in the data: on 2015-10-06, when the temperature first rose to above 1 degree over the average.
+
+fig, ax = plt.subplots()
+
+# Plot the CO2 levels time-series in blue
+plot_timeseries(ax, climate_change.index, climate_change['co2'], 'blue', "Time (years)", "CO2 levels")
+
+# Create an Axes object that shares the x-axis
+ax2 = ax.twinx()
+
+# Plot the relative temperature data in red
+plot_timeseries(ax, climate_change.index, climate_change['relative_temp'], 'red', "Time (years)", "Relative temp (Celsius)")
+
+# Annotate point with relative temperature >1 degree
+ax2.annotate(">1 degree", xy=(pd.Timestamp('2015-10-06'), 1), xytext=(pd.Timestamp('2008-10-06'), -0.2), arrowprops={"arrowstyle":"->", "color":"gray"})
+
+plt.show()
