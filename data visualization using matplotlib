@@ -311,5 +311,139 @@ ax.bar(medals.index, medals["Bronze"], bottom=medals["Gold"] + medals["Silver"],
 # Display the legend
 ax.legend()
 
+Creating histograms
+Histograms show the full distribution of a variable. In this exercise, we will display the distribution of weights of medalists in gymnastics and in rowing in the 2016 Olympic games for a comparison between them.
+
+You will have two DataFrames to use. The first is called mens_rowing and includes information about the medalists in the men's rowing events. The other is called mens_gymnastics and includes information about medalists in all of the Gymnastics events.
+
+fig, ax = plt.subplots()
+# Plot a histogram of "Weight" for mens_rowing
+ax.hist(mens_rowing["Weight"])
+
+# Compare to histogram of "Weight" for mens_gymnastics
+ax.hist(mens_gymnastics["Weight"])
+
+# Set the x-axis label to "Weight (kg)"
+ax.set_xlabel("Weight (kg)")
+
+# Set the y-axis label to "# of observations"
+ax.set_ylabel("# of observations")
+
+plt.show()
+
+"Step" histogram
+Histograms allow us to see the distributions of the data in different groups in our data. In this exercise, you will select groups from the Summer 2016 Olympic Games medalist dataset to compare the height of medalist athletes in two different sports.
+
+The data is stored in a pandas DataFrame object called summer_2016_medals that has a column "Height". In addition, you are provided a pandas GroupBy object that has been grouped by the sport.
+
+In this exercise, you will visualize and label the histograms of two sports: "Gymnastics" and "Rowing" and see the marked difference between medalists in these two sports.
+
+fig, ax = plt.subplots()
+
+# Plot a histogram of "Weight" for mens_rowing
+ax.hist(mens_rowing["Weight"], label = "Rowing", histtype = 'step', bins = 5)
+
+# Compare to histogram of "Weight" for mens_gymnastics
+ax.hist(mens_gymnastics["Weight"], label = "Gymnastics", histtype = 'step', bins =5)
+
+ax.set_xlabel("Weight (kg)")
+ax.set_ylabel("# of observations")
+
+# Add the legend and show the Figure
+ax.legend()
+plt.show()
+
+Adding error-bars to a bar chart
+Statistical plotting techniques add quantitative information for comparisons into the visualization. For example, in this exercise, we will add error bars that quantify not only the difference in the means of the height of medalists in the 2016 Olympic Games, but also the standard deviation of each of these groups, as a way to assess whether the difference is substantial relative to the variability within each group.
+
+For the purpose of this exercise, you will have two DataFrames: mens_rowing holds data about the medalists in the rowing events and mens_gymnastics will hold information about the medalists in the gymnastics events.
+
+fig, ax = plt.subplots()
+
+# Add a bar for the rowing "Height" column mean/std
+ax.bar("Rowing", mens_rowing["Height"].mean(), yerr=mens_rowing["Height"].std())
+
+# Add a bar for the gymnastics "Height" column mean/std
+ax.bar("Gymnastics", mens_gymnastics["Height"].mean(), yerr=mens_gymnastics["Height"].std())
+
+# Label the y-axis
+ax.set_ylabel("Height (cm)")
+
+plt.show()
+
+Adding error-bars to a plot
+Adding error-bars to a plot is done by using the errorbar method of the Axes object.
+
+Here, you have two DataFrames loaded: seattle_weather has data about the weather in Seattle and austin_weather has data about the weather in Austin. Each DataFrame has a column "MONTH" that has the names of the months, a column "MLY-TAVG-NORMAL" that has the average temperature in each month and a column "MLY-TAVG-STDDEV" that has the standard deviation of the temperatures across years.
+
+In the exercise, you will plot the mean temperature across months and add the standard deviation at each point as y errorbars.
+
+fig, ax = plt.subplots()
+
+# Add Seattle temperature data in each month with error bars
+ax.errorbar(seattle_weather["MONTH"], seattle_weather["MLY-TAVG-NORMAL"], yerr=seattle_weather["MLY-TAVG-STDDEV"])
+
+# Add Austin temperature data in each month with error bars
+ax.errorbar(austin_weather["MONTH"], austin_weather["MLY-TAVG-NORMAL"], yerr=austin_weather["MLY-TAVG-STDDEV"]) 
+
+# Set the y-axis label
+ax.set_ylabel("Temperature (Fahrenheit)")
+
+plt.show()
+
+Creating boxplots
+Boxplots provide additional information about the distribution of the data that they represent. They tell us what the median of the distribution is, what the inter-quartile range is and also what the expected range of approximately 99% of the data should be. Outliers beyond this range are particularly highlighted.
+
+In this exercise, you will use the data about medalist heights that you previously visualized as histograms, and as bar charts with error bars, and you will visualize it as boxplots.
+
+Again, you will have the mens_rowing and mens_gymnastics DataFrames available to you, and both of these DataFrames have columns called "Height" that you will compare.
+
+fig, ax = plt.subplots()
+
+# Add a boxplot for the "Height" column in the DataFrames
+ax.boxplot([mens_rowing["Height"],mens_gymnastics["Height"]])
+
+# Add x-axis tick labels:
+ax.set_xticklabels(["Rowing", "Gymnastics"])
+
+# Add a y-axis label
+ax.set_ylabel("Height (cm)")
+
+plt.show()
+
+Simple scatter plot
+Scatter are a bi-variate visualization technique. They plot each record in the data as a point. The location of each point is determined by the value of two variables: the first variable determines the distance along the x-axis and the second variable determines the height along the y-axis.
+
+In this exercise, you will create a scatter plot of the climate_change data. This DataFrame, which is already loaded, has a column "co2" that indicates the measurements of carbon dioxide every month and another column, "relative_temp" that indicates the temperature measured at the same time.
+
+fig, ax = plt.subplots()
+
+# Add data: "co2" on x-axis, "relative_temp" on y-axis
+ax.scatter(climate_change["co2"], climate_change["relative_temp"])
+
+# Set the x-axis label to "CO2 (ppm)"
+ax.set_xlabel("CO2 (ppm)")
+
+# Set the y-axis label to "Relative temperature (C)"
+ax.set_ylabel("Relative temperature (C)")
+
+plt.show()
+
+Encoding time by color
+The screen only has two dimensions, but we can encode another dimension in the scatter plot using color. Here, we will visualize the climate_change dataset, plotting a scatter plot of the "co2" column, on the x-axis, against the "relative_temp" column, on the y-axis. We will encode time using the color dimension, with earlier times appearing as darker shades of blue and later times appearing as brighter shades of yellow.
+
+fig, ax = plt.subplots()
+
+# Add data: "co2", "relative_temp" as x-y, index as color
+ax.scatter(climate_change["co2"], climate_change["relative_temp"], c=climate_change.index)
+
+# Set the x-axis label to "CO2 (ppm)"
+ax.set_xlabel("CO2 (ppm)")
+
+# Set the y-axis label to "Relative temperature (C)"
+ax.set_ylabel("Relative temperature (C)")
+
+plt.show()
+
 plt.show()
 
